@@ -3,13 +3,12 @@ The script based on assumption that 'a','o' or other one-symbols
 and abbreviations ('ll','se','d') are the words
 '''
 from collections import Counter
-from re import split
-from sys import exit, argv
-from os import path
+from re import findall
+from sys import argv, exit
 
 
-def read_file():
-    '''This function reads the file specified as 2nd parameter of the command'''
+def read_file(argv):
+    '''This function reads the file specified as 2nd parameter of command'''
     if len(argv) == 2:
         if argv[1] == '/?':
             print('The command usage: python [script_name.py] [file.txt]')
@@ -35,14 +34,8 @@ def read_file():
 
 def word_count(file):
     '''This function counts words in text'''
-    # Splitting the file by words and applying the lowercase
-    words = split(r'\W+', file.lower())
-    counts = Counter()
-
-    # Words count calculation
-    for word in words:
-        counts[word] += 1
-    return counts
+    words = Counter(findall(r'\w+', file.lower()))
+    return words
 
 
 def print_sorted_keys_to_console(counts):
@@ -55,9 +48,10 @@ def print_sorted_keys_to_console(counts):
 
 def main():
     '''This function starts the main control flow'''
-    file = read_file()
+    file = read_file(argv)
     counts = word_count(file)
     print_sorted_keys_to_console(counts)
+
 
 if __name__ == '__main__':
     main()
